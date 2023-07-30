@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+// App.js (dans le dossier 'src')
 
-function App() {
+import React, { useState, useEffect } from 'react';
+
+const App = () => {
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    // Fonction pour récupérer les données depuis le serveur CodeIgniter
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/test');
+        const jsonData = await response.json();
+
+        // Vérifier si les données sont un objet avant de les stocker dans le state
+        if (typeof jsonData === 'object' && jsonData !== null) {
+          setData(jsonData);
+        } else {
+          console.error('Les données récupérées ne sont pas un objet.');
+        }
+      } catch (error) {
+        console.error('Erreur lors de la récupération des données :', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Données récupérées depuis CodeIgniter :</h1>
+      <ul>
+        {Object.keys(data).map((key, index) => (
+          <li key={index}>
+            <strong>{key}:</strong> {data[key]}
+          </li>
+        ))}
+      </ul>
     </div>
   );
-}
+};
 
 export default App;
