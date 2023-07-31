@@ -1,6 +1,6 @@
-// App.js (dans le dossier 'src')
-
+import { ChakraProvider } from '@chakra-ui/react';
 import React, { useState, useEffect } from 'react';
+import { Card, CardHeader, CardBody, CardFooter , Stack , Image , Button,Divider,ButtonGroup } from '@chakra-ui/react'
 
 const App = () => {
   const [data, setData] = useState({});
@@ -27,16 +27,41 @@ const App = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Données récupérées depuis CodeIgniter :</h1>
-      <ul>
-        {Object.keys(data).map((key, index) => (
-          <li key={index}>
-            <strong>{key}:</strong> {data[key]}
-          </li>
+<ChakraProvider>
+  <div>
+    <h1 className="text-center">Les personnages Dragon ball Z :</h1>
+    <div className="row gap-5 d-flex justify-content-center mt-5">
+      {Array.isArray(data) &&
+        data.map((perso, index) => (
+          <Card maxW="sm" key={index} style={{border:"2px solid #F0E68C"}}>
+            <CardBody>
+              <Image
+                className="mt-3"
+                src={`${process.env.PUBLIC_URL}/img/${perso.img}`}
+                alt={`Avatar de ${perso.name}`}
+                borderRadius="lg"
+                style={{
+                  maxHeight: '15rem',
+                  width: '15rem',
+                  minHeight: '15rem',
+                  margin: 'auto',
+                  borderRadius: '1rem',
+                }}
+              />
+              <Divider />
+              <li className="text-center">
+                <strong>Nom :</strong> {perso.name}
+                <br />
+                <strong>Description :</strong> {perso.race}
+                <br />
+                <br />
+              </li>
+            </CardBody>
+          </Card>
         ))}
-      </ul>
     </div>
+  </div>
+</ChakraProvider>
   );
 };
 
